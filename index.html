@@ -970,7 +970,7 @@ function showScreen(id) {
 // ══════════════════ QUIZ ══════════════════
 function startQuiz() {
   currentQ = 0;
-  answers = new Array(questions.length).fill(null);
+  answers = {};
   shuffledOrders = [];
   totalScore = 0;
   selectedOption = null;
@@ -1037,11 +1037,12 @@ function renderQuestion() {
   });
 
   // 이전에 선택한 답변 복원
-  if (answers[currentQ] !== null && answers[currentQ] !== undefined && answers[currentQ].origIdx !== undefined) {
+  if (answers.hasOwnProperty(currentQ)) {
+    const saved = answers[currentQ];
     container.querySelectorAll('.option-btn').forEach(btn => {
-      if (parseInt(btn.dataset.origIdx) === answers[currentQ].origIdx) {
+      if (parseInt(btn.dataset.origIdx) === saved.origIdx) {
         btn.classList.add('selected-active');
-        selectedOption = answers[currentQ].origIdx;
+        selectedOption = saved.origIdx;
       }
     });
     document.getElementById('btn-next').classList.add('visible');
@@ -1076,7 +1077,7 @@ function prevQuestion() {
 }
 
 function nextQuestion() {
-  if (answers[currentQ] === null) return; // safety guard
+  if (!answers.hasOwnProperty(currentQ)) return;
   currentQ++;
   selectedOption = null;
   if (currentQ >= questions.length) {
@@ -1088,7 +1089,7 @@ function nextQuestion() {
 
 // ══════════════════ RESULT ══════════════════
 function showResult() {
-  totalScore = answers.reduce((sum, a) => sum + (a ? a.score : 0), 0);
+  totalScore = Object.values(answers).reduce((sum, a) => sum + (a ? a.score : 0), 0);
   const tierKey = getTier(totalScore);
   const r = results[tierKey];
 
