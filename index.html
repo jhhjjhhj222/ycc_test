@@ -1037,13 +1037,11 @@ function renderQuestion() {
   });
 
   // 이전에 선택한 답변 복원
-  if (answers[currentQ] !== null) {
-    const prevScore = answers[currentQ].score;
+  if (answers[currentQ] !== null && answers[currentQ] !== undefined && answers[currentQ].origIdx !== undefined) {
     container.querySelectorAll('.option-btn').forEach(btn => {
-      const opt = q.options[parseInt(btn.dataset.origIdx)];
-      if (opt.score === prevScore) {
+      if (parseInt(btn.dataset.origIdx) === answers[currentQ].origIdx) {
         btn.classList.add('selected-active');
-        selectedOption = parseInt(btn.dataset.origIdx);
+        selectedOption = answers[currentQ].origIdx;
       }
     });
     document.getElementById('btn-next').classList.add('visible');
@@ -1065,7 +1063,7 @@ function selectOption(origIdx, opt, el) {
   el.classList.add('selected-active');
 
   // store/overwrite answer for this question
-  answers[currentQ] = { q: currentQ, score: opt.score };
+  answers[currentQ] = { q: currentQ, score: opt.score, origIdx: origIdx };
 
   document.getElementById('btn-next').classList.add('visible');
 }
