@@ -341,6 +341,20 @@
     background: var(--neon-green);
     color: #000;
   }
+  /* 모바일 터치 후 hover 잔상 제거 */
+  @media (hover: none) {
+    .option-btn:hover {
+      background: #0a100a;
+      border-color: #1e3a1e;
+      color: #88bb88;
+      box-shadow: none;
+      transform: none;
+    }
+    .option-btn:hover .opt-key {
+      background: #1e3a1e;
+      color: var(--neon-green);
+    }
+  }
   .option-btn.selected-active {
     background: #0f1f0f;
     border-color: #4a7a4a;
